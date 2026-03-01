@@ -12,8 +12,10 @@ form.addEventListener("submit", function (e) {
     return;
   }
 
+  // ✅ pehle users lao
   const users = JSON.parse(localStorage.getItem("users")) || [];
 
+  // ✅ phir user find karo
   const user = users.find((u) => u.email === email && u.password === password);
 
   if (!user) {
@@ -21,20 +23,17 @@ form.addEventListener("submit", function (e) {
     return;
   }
 
-  // 🔴 IMPORTANT: role mismatch check
-  if (user.role && user.role !== selectedRole) {
+  // 🔴 role mismatch check
+  if (user.role !== selectedRole) {
     alert("You selected wrong role!");
     return;
   }
 
-  // save current user
-  localStorage.setItem(
-    "currentUser",
-    JSON.stringify({ ...user, role: selectedRole }),
-  );
+  // ✅ save current user
+  localStorage.setItem("currentUser", JSON.stringify(user));
 
   // ✅ PERFECT redirect
-  switch (selectedRole) {
+  switch (user.role) {
     case "doctor":
       window.location.href = "doctor.html";
       break;
@@ -46,5 +45,8 @@ form.addEventListener("submit", function (e) {
     case "admin":
       window.location.href = "admin.html";
       break;
+
+    default:
+      alert("Unknown role");
   }
 });

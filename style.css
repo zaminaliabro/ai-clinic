@@ -128,3 +128,341 @@ select {
   margin: 8px 0;
   border-radius: 6px;
 }
+/* ===============================
+   THEME COLORS
+================================= */
+
+/* 👨‍⚕️ Doctor Theme */
+.doctor-theme {
+  background: linear-gradient(135deg, #e3f2fd, #f5f9ff);
+}
+
+.doctor-theme thead {
+  background: #1976d2;
+}
+
+.doctor-theme h3 {
+  color: #1976d2;
+}
+
+.doctor-theme #logoutBtn {
+  background: #1976d2;
+}
+
+.doctor-theme #logoutBtn:hover {
+  background: #0d47a1;
+}
+
+/* 🧑 Patient Theme */
+.patient-theme {
+  background: linear-gradient(135deg, #e8f5e9, #f3fff4);
+}
+
+.patient-theme thead {
+  background: #2e7d32;
+}
+
+.patient-theme h3 {
+  color: #2e7d32;
+}
+
+.patient-theme #logoutBtn {
+  background: #2e7d32;
+}
+
+.patient-theme #logoutBtn:hover {
+  background: #1b5e20;
+}
+/* 👨‍⚕️ Doctor Theme */
+.doctor-theme {
+  background: #f0f9ff;
+}
+
+/* info cards */
+.doctor-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.card h3 {
+  margin-bottom: 8px;
+  color: #2563eb;
+}
+
+.card p {
+  font-size: 18px;
+  font-weight: bold;
+}
+/* status colors */
+.status {
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: white;
+  font-size: 13px;
+}
+
+.status.pending {
+  background: orange;
+}
+
+.status.approved {
+  background: green;
+}
+
+.status.rejected {
+  background: red;
+}
+
+/* buttons */
+.approveBtn {
+  background: #16a34a;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  margin-right: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.rejectBtn {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.approveBtn:hover {
+  background: #15803d;
+}
+
+.rejectBtn:hover {
+  background: #b91c1c;
+}
+/* ===============================
+   DOCTOR DASHBOARD PROFESSIONAL
+=============================== */
+
+.doctor-theme {
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ===== CONTAINER ===== */
+.doctor-theme .container {
+  max-width: 1250px;
+  margin: auto;
+  padding: 25px;
+}
+
+/* ===== HEADER ===== */
+.doctor-theme h1 {
+  margin-bottom: 5px;
+  color: #0f172a;
+}
+
+#welcomeDoctor {
+  color: #64748b;
+  margin-bottom: 15px;
+}
+
+/* ===============================
+   🔥 SMALL LOGOUT BUTTON
+=============================== */
+#logoutBtn {
+  background: #111827;
+  color: white;
+  border: none;
+  padding: 6px 14px; /* 👈 chota kiya */
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 20px;
+  transition: 0.25s;
+  width: auto; /* 👈 full width remove */
+}
+
+#logoutBtn:hover {
+  background: #000;
+  transform: translateY(-1px);
+}
+
+/* ===============================
+   DASHBOARD LAYOUT
+=============================== */
+.doctor-theme .dashboard-layout {
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+  align-items: flex-start;
+}
+
+/* ===============================
+   LEFT SIDE (CARDS)
+=============================== */
+.doctor-theme .doctor-info {
+  width: 320px; /* 👈 cards area bara */
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* ===============================
+   🔥 BIGGER CARDS
+=============================== */
+.doctor-theme .card {
+  background: #ffffff;
+  padding: 26px; /* 👈 card bara */
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+  border-left: 6px solid #2563eb;
+  transition: 0.25s ease;
+}
+
+.doctor-theme .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
+}
+
+.doctor-theme .card h3 {
+  color: #64748b;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.doctor-theme .card p {
+  font-size: 22px; /* 👈 text bara */
+  font-weight: bold;
+  color: #0f172a;
+}
+
+/* ===============================
+   RIGHT SIDE (TABLE)
+=============================== */
+.doctor-theme .appointments-section {
+  flex: 1;
+}
+
+.doctor-theme .appointments-section h2 {
+  margin-bottom: 15px;
+  color: #0f172a;
+}
+
+/* ===== TABLE ===== */
+.doctor-theme table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+.doctor-theme th {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  padding: 14px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.doctor-theme td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.doctor-theme tr:hover {
+  background: #f8fafc;
+}
+
+/* ===============================
+   STATUS BADGES
+=============================== */
+.status {
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status.approved {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status.rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* ===============================
+   ACTION BUTTONS
+=============================== */
+.approveBtn {
+  background: #16a34a;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  margin-right: 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.approveBtn:hover {
+  background: #15803d;
+}
+
+.rejectBtn {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.rejectBtn:hover {
+  background: #b91c1c;
+}
+
+/* ===============================
+   RESPONSIVE
+=============================== */
+@media (max-width: 900px) {
+  .doctor-theme .dashboard-layout {
+    flex-direction: column;
+  }
+
+  .doctor-theme .doctor-info {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .doctor-theme .card {
+    flex: 1;
+    min-width: 180px;
+  }
+}

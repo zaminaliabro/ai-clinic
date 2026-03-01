@@ -6,26 +6,51 @@
     <title>Doctor Dashboard</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
+
+  <body class="doctor-theme">
     <div class="container">
       <h1>Doctor Dashboard 👨‍⚕️</h1>
-
       <h3 id="welcomeDoctor"></h3>
-
       <button id="logoutBtn">Logout</button>
 
-      <h2>Your Appointments</h2>
-      <table border="1" width="100%">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Patient</th>
-            <th>Date</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="doctorAppointments"></tbody>
-      </table>
+      <!-- ✅ DASHBOARD LAYOUT -->
+      <div class="dashboard-layout">
+        <!-- LEFT SIDE: DOCTOR INFO -->
+        <div class="doctor-info">
+          <div class="card">
+            <h3>Name</h3>
+            <p id="docName"></p>
+          </div>
+
+          <div class="card">
+            <h3>Email</h3>
+            <p id="docEmail"></p>
+          </div>
+
+          <div class="card">
+            <h3>Total Appointments</h3>
+            <p id="totalAppointments">0</p>
+          </div>
+        </div>
+
+        <!-- RIGHT SIDE: APPOINTMENTS -->
+        <div class="appointments-section">
+          <h2>Your Appointments</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Patient</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="doctorAppointments"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
     <script>
@@ -40,24 +65,57 @@
       document.getElementById("welcomeDoctor").textContent =
         "Welcome Dr. " + currentUser.firstName;
 
+      // doctor info
+      document.getElementById("docName").textContent =
+        currentUser.firstName + " " + currentUser.lastName;
+      document.getElementById("docEmail").textContent = currentUser.email;
+
       // load appointments
-      const appointments =
-        JSON.parse(localStorage.getItem("appointments")) || [];
+      let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+
       const tbody = document.getElementById("doctorAppointments");
 
-      const myAppointments = appointments.filter(
-        (a) => a.doctor === currentUser.firstName,
-      );
+      function renderAppointments() {
+        tbody.innerHTML = "";
 
-      myAppointments.forEach((a, index) => {
-        const row = tbody.insertRow();
-        row.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${a.patient}</td>
-        <td>${a.date}</td>
-        <td>${a.status}</td>
-      `;
-      });
+        const myAppointments = appointments.filter(
+          (a) => a.doctor === currentUser.firstName,
+        );
+
+        document.getElementById("totalAppointments").textContent =
+          myAppointments.length;
+
+        myAppointments.forEach((a, index) => {
+          const row = tbody.insertRow();
+
+          row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${a.patient}</td>
+            <td>${a.date}</td>
+            <td><span class="status ${a.status}">${a.status}</span></td>
+            <td>
+              <button class="approveBtn">Approve</button>
+              <button class="rejectBtn">Reject</button>
+            </td>
+          `;
+
+          // ✅ approve
+          row.querySelector(".approveBtn").onclick = () => {
+            a.status = "approved";
+            localStorage.setItem("appointments", JSON.stringify(appointments));
+            renderAppointments();
+          };
+
+          // ❌ reject
+          row.querySelector(".rejectBtn").onclick = () => {
+            a.status = "rejected";
+            localStorage.setItem("appointments", JSON.stringify(appointments));
+            renderAppointments();
+          };
+        });
+      }
+
+      renderAppointments();
 
       // logout
       document.getElementById("logoutBtn").onclick = () => {

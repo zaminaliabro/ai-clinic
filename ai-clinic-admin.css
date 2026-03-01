@@ -239,6 +239,12 @@ table tr:hover {
 .status.pending {
   background: #e67e22; /* orange */
 }
+.status.approved {
+  background: #dbb434; /* blue */
+}
+.status.rejected {
+  background: #e74c3c; /* red */
+}
 .status.completed {
   background: #2ecc71; /* green */
 }
