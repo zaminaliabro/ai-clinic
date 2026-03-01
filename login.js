@@ -5,6 +5,12 @@ form.addEventListener("submit", function (e) {
 
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
+  const selectedRole = document.getElementById("role").value;
+
+  if (!email || !password || !selectedRole) {
+    alert("Fill all fields!");
+    return;
+  }
 
   const users = JSON.parse(localStorage.getItem("users")) || [];
 
@@ -15,14 +21,30 @@ form.addEventListener("submit", function (e) {
     return;
   }
 
-  localStorage.setItem("currentUser", JSON.stringify(user));
+  // 🔴 IMPORTANT: role mismatch check
+  if (user.role && user.role !== selectedRole) {
+    alert("You selected wrong role!");
+    return;
+  }
 
-  // 🔥 AUTO redirect by saved role
-  if (user.role === "doctor") {
-    window.location.href = "doctor.html";
-  } else if (user.role === "patient") {
-    window.location.href = "patient.html";
-  } else {
-    window.location.href = "admin.html";
+  // save current user
+  localStorage.setItem(
+    "currentUser",
+    JSON.stringify({ ...user, role: selectedRole }),
+  );
+
+  // ✅ PERFECT redirect
+  switch (selectedRole) {
+    case "doctor":
+      window.location.href = "doctor.html";
+      break;
+
+    case "patient":
+      window.location.href = "patient.html";
+      break;
+
+    case "admin":
+      window.location.href = "admin.html";
+      break;
   }
 });

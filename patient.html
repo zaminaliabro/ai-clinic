@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Patient Dashboard 🧑</h1>
+
+      <h3 id="welcomePatient"></h3>
+
+      <button id="logoutBtn">Logout</button>
+
+      <h2>Your Appointments</h2>
+      <table border="1" width="100%">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Doctor</th>
+            <th>Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="patientAppointments"></tbody>
+      </table>
+    </div>
+
+    <script>
+      // 🔐 access protection
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      if (!currentUser || currentUser.role !== "patient") {
+        alert("Access denied!");
+        window.location.href = "login.html";
+      }
+
+      // welcome
+      document.getElementById("welcomePatient").textContent =
+        "Welcome " + currentUser.firstName;
+
+      // load appointments
+      const appointments =
+        JSON.parse(localStorage.getItem("appointments")) || [];
+      const tbody = document.getElementById("patientAppointments");
+
+      const myAppointments = appointments.filter(
+        (a) => a.patient === currentUser.firstName,
+      );
+
+      myAppointments.forEach((a, index) => {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${a.doctor}</td>
+        <td>${a.date}</td>
+        <td>${a.status}</td>
+      `;
+      });
+
+      // logout
+      document.getElementById("logoutBtn").onclick = () => {
+        localStorage.removeItem("currentUser");
+        window.location.href = "login.html";
+      };
+    </script>
+  </body>
+</html>
