@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Login Page</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Login</h1>
+
+      <!-- ❌ action remove kiya -->
+      <form id="loginForm">
+        <input id="email" type="email" required placeholder="Email" />
+        <input id="password" type="password" required placeholder="Password" />
+
+        <!-- ✅ NEW: role select -->
+        <select id="role" required>
+          <option value="">Select Role</option>
+          <option value="admin">Admin</option>
+          <option value="doctor">Doctor</option>
+          <option value="patient">Patient</option>
+        </select>
+
+        <button type="submit">Login</button>
+      </form>
+
+      <p>
+        Don't have an account?
+        <a href="./signup.html">Sign up here</a>
+      </p>
+    </div>
+
+    <!-- ✅ module hata diya -->
+    <script src="login.js"></script>
+  </body>
+</html>

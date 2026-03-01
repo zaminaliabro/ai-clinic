@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Clinic Dashboard</title>
+    <link rel="stylesheet" href="ai-clinic-admin.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <h2>AI Clinic</h2>
+        <ul>
+          <li>
+            <a href="#" class="tab-link active" data-tab="patients">Patients</a>
+          </li>
+          <li><a href="#" class="tab-link" data-tab="doctors">Doctors</a></li>
+          <li>
+            <a href="#" class="tab-link" data-tab="appointments"
+              >Appointments</a
+            >
+          </li>
+          <li><a href="#" class="tab-link" data-tab="reports">Reports</a></li>
+        </ul>
+        <button id="logoutBtn">Logout</button>
+      </aside>
+
+      <!-- Main content -->
+      <main class="main-content">
+        <header>
+          <h1>Dashboard</h1>
+          <div class="user-info">Admin</div>
+        </header>
+
+        <!-- Cards -->
+        <section class="cards">
+          <div class="card">
+            <h3>Patients</h3>
+            <p id="total-patients">0</p>
+          </div>
+          <div class="card">
+            <h3>Doctors</h3>
+            <p id="total-doctors">0</p>
+          </div>
+          <div class="card">
+            <h3>Appointments</h3>
+            <p id="total-appointments">0</p>
+          </div>
+        </section>
+
+        <!-- Modal Buttons -->
+        <div class="modal-btns">
+          <button id="openAddPatientBtn">Add Patient</button>
+          <button id="openAddDoctorBtn">Add Doctor</button>
+          <button id="openAddAppointmentBtn">Add Appointment</button>
+        </div>
+
+        <!-- Tabs -->
+        <section class="tab-content">
+          <!-- Patients Tab -->
+          <div class="tab-panel" id="patients">
+            <input
+              type="text"
+              id="patientSearch"
+              class="search-box"
+              placeholder="Search Patients..."
+            />
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Age</th>
+                  <th>Doctor</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="patientTable"></tbody>
+            </table>
+          </div>
+
+          <!-- Doctors Tab -->
+          <div class="tab-panel" id="doctors" style="display: none">
+            <input
+              type="text"
+              id="doctorSearch"
+              class="search-box"
+              placeholder="Search Doctors..."
+            />
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Specialty</th>
+                  <th>Patients</th>
+                </tr>
+              </thead>
+              <tbody id="doctorTable"></tbody>
+            </table>
+          </div>
+
+          <!-- Appointments Tab -->
+          <div class="tab-panel" id="appointments" style="display: none">
+            <input
+              type="text"
+              id="appointmentSearch"
+              class="search-box"
+              placeholder="Search Appointments..."
+            />
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Patient</th>
+                  <th>Doctor</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="appointmentTable"></tbody>
+            </table>
+          </div>
+
+          <!-- Reports Tab -->
+          <div class="tab-panel" id="reports" style="display: none">
+            <h3>Reports</h3>
+            <p>Total Patients: <span id="reportPatients">0</span></p>
+            <p>Total Doctors: <span id="reportDoctors">0</span></p>
+            <p>Total Appointments: <span id="reportAppointments">0</span></p>
+
+            <h4>Upload Patient Report</h4>
+            <input
+              type="text"
+              id="reportPatientName"
+              placeholder="Patient Name"
+            />
+            <input type="file" id="reportFile" />
+            <button id="uploadReportBtn">Upload Report</button>
+            <ul id="uploadedReports"></ul>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Patient Modal -->
+    <div class="modal" id="patientModal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Add Patient</h2>
+        <input type="text" id="patientName" placeholder="Patient Name" />
+        <input type="number" id="patientAge" placeholder="Age" />
+        <input type="text" id="patientDoctor" placeholder="Doctor Name" />
+        <input type="date" id="patientDate" />
+        <button id="savePatientBtn">Save</button>
+      </div>
+    </div>
+
+    <!-- Doctor Modal -->
+    <div class="modal" id="doctorModal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Add Doctor</h2>
+        <input type="text" id="doctorName" placeholder="Doctor Name" />
+        <input type="text" id="doctorSpecialty" placeholder="Specialty" />
+        <button id="saveDoctorBtn">Save</button>
+      </div>
+    </div>
+
+    <!-- Appointment Modal -->
+    <div class="modal" id="appointmentModal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Add Appointment</h2>
+        <input type="text" id="appointmentPatient" placeholder="Patient Name" />
+        <input type="text" id="appointmentDoctor" placeholder="Doctor Name" />
+        <input type="date" id="appointmentDate" />
+        <select id="appointmentStatus">
+          <option value="Pending">Pending</option>
+          <option value="Completed">Completed</option>
+        </select>
+        <button id="saveAppointmentBtn">Save</button>
+      </div>
+    </div>
+
+    <script src="ai-clinic-admin.js"></script>
+  </body>
+</html>
