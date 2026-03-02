@@ -4,66 +4,287 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Patient Dashboard</title>
-    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      /* ================= GLOBAL ================= */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        min-height: 100vh;
+      }
+
+      h2 {
+        margin-top: 0;
+      }
+
+      /* ================= TOPBAR ================= */
+      .topbar {
+        width: 100%;
+        height: 60px;
+        background: #14532d;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+      }
+
+      .logout-btn {
+        background: #dc2626;
+        border: none;
+        color: white;
+        padding: 8px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      .logout-btn:hover {
+        background: #b91c1c;
+      }
+
+      /* ================= CONTAINER ================= */
+      .patient-theme .container {
+        max-width: 1250px;
+        margin: auto;
+        padding: 25px;
+      }
+
+      /* ================= DASHBOARD LAYOUT ================= */
+      .dashboard-layout {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 25px;
+        align-items: start;
+      }
+
+      /* ================= LEFT CARDS ================= */
+      .doctor-info {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 14px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
+
+      .card h3 {
+        margin: 0 0 10px 0;
+        color: #2e7d32;
+      }
+
+      .status-active {
+        color: #2e7d32;
+        font-weight: bold;
+      }
+
+      /* ================= RIGHT TABLE ================= */
+      .appointments-section {
+        background: white;
+        padding: 20px;
+        border-radius: 14px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+      }
+
+      th {
+        background-color: #2e7d32;
+        color: white;
+      }
+
+      .status-approved {
+        color: #2e7d32;
+        font-weight: bold;
+      }
+
+      .status-pending {
+        color: #f9a825;
+        font-weight: bold;
+      }
+
+      /* ================= BUTTON ================= */
+      .btn {
+        display: inline-block;
+        padding: 10px 16px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        background: #2e7d32;
+        color: white;
+        margin-top: 10px;
+      }
+
+      .btn:hover {
+        background: #1b5e20;
+      }
+
+      /* ================= MOBILE ================= */
+      @media (max-width: 900px) {
+        .dashboard-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </head>
+
   <body class="patient-theme">
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <strong>Patient Panel</strong>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
     <div class="container">
-      <h1>Patient Dashboard 🧑</h1>
+      <h2>My Appointments</h2>
 
-      <h3 id="welcomePatient"></h3>
+      <div class="dashboard-layout">
+        <!-- ================= LEFT SIDE ================= -->
+        <div class="doctor-info">
+          <div class="card">
+            <h3>Assigned Doctor</h3>
+            <p>
+              <strong>Name:</strong> <span id="doctorName">Loading...</span>
+            </p>
+            <p>
+              <strong>Specialty:</strong>
+              <span id="doctorSpec">Loading...</span>
+            </p>
+            <p>
+              <strong>Status:</strong>
+              <span class="status-active">Active</span>
+            </p>
+            <button class="btn">Request Appointment</button>
+          </div>
 
-      <button id="logoutBtn">Logout</button>
+          <div class="card">
+            <h3>Patient Info</h3>
+            <p>
+              <strong>Name:</strong> <span id="patientName">Loading...</span>
+            </p>
+            <p>
+              <strong>Email:</strong> <span id="patientEmail">Loading...</span>
+            </p>
+            <p><strong>ID:</strong> <span id="patientId">Loading...</span></p>
+          </div>
+        </div>
 
-      <h2>Your Appointments</h2>
-      <table border="1" width="100%">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Doctor</th>
-            <th>Date</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="patientAppointments"></tbody>
-      </table>
+        <!-- ================= RIGHT SIDE ================= -->
+        <div class="appointments-section">
+          <h3>Appointment History</h3>
+          <p>Total Appointments: <strong id="totalAppointments">0</strong></p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Doctor</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="appointmentTable"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
     <script>
-      // 🔐 access protection
+      // ===== LOAD CURRENT USER =====
       const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-      if (!currentUser || currentUser.role !== "patient") {
-        alert("Access denied!");
-        window.location.href = "login.html";
-      }
 
-      // welcome
-      document.getElementById("welcomePatient").textContent =
-        "Welcome " + currentUser.firstName;
-
-      // load appointments
+      // ===== LOAD DATA =====
+      const doctors = JSON.parse(localStorage.getItem("doctors")) || [];
       const appointments =
         JSON.parse(localStorage.getItem("appointments")) || [];
-      const tbody = document.getElementById("patientAppointments");
 
-      const myAppointments = appointments.filter(
-        (a) => a.patient === currentUser.firstName,
-      );
+      // ===== PATIENT INFO =====
+      if (currentUser) {
+        document.getElementById("patientName").textContent =
+          (currentUser.firstName || "") + " " + (currentUser.lastName || "");
 
-      myAppointments.forEach((a, index) => {
-        const row = tbody.insertRow();
-        row.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${a.doctor}</td>
-        <td>${a.date}</td>
-        <td>${a.status}</td>
+        document.getElementById("patientEmail").textContent =
+          currentUser.email || "N/A";
+
+        document.getElementById("patientId").textContent =
+          currentUser.id || "P-1001";
+      }
+
+      // ===== AUTO FIND DOCTOR FROM APPOINTMENTS ===== ✅
+      if (currentUser) {
+        const myAppointment = appointments.find(
+          (a) =>
+            a.patient?.toLowerCase() === currentUser.firstName?.toLowerCase(),
+        );
+
+        if (myAppointment) {
+          document.getElementById("doctorName").textContent =
+            "Dr. " + myAppointment.doctor;
+
+          // find specialty from doctors list
+          const docInfo = doctors.find(
+            (d) =>
+              d.name?.toLowerCase() === myAppointment.doctor?.toLowerCase(),
+          );
+
+          document.getElementById("doctorSpec").textContent =
+            docInfo?.specialty || "General";
+        } else {
+          document.getElementById("doctorName").textContent = "Not Assigned";
+          document.getElementById("doctorSpec").textContent = "-";
+        }
+      }
+
+      // ===== APPOINTMENTS TABLE =====
+      const tbody = document.getElementById("appointmentTable");
+
+      if (tbody && currentUser) {
+        const myAppointments = appointments.filter(
+          (a) =>
+            a.patient?.toLowerCase() === currentUser.firstName?.toLowerCase(),
+        );
+
+        document.getElementById("totalAppointments").textContent =
+          myAppointments.length;
+
+        tbody.innerHTML = "";
+
+        myAppointments.forEach((appt, index) => {
+          tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>Dr. ${appt.doctor}</td>
+          <td>${appt.date}</td>
+          <td class="status-${appt.status.toLowerCase()}">${appt.status}</td>
+        </tr>
       `;
-      });
+        });
+      }
 
-      // logout
-      document.getElementById("logoutBtn").onclick = () => {
+      // ===== LOGOUT =====
+      function logout() {
         localStorage.removeItem("currentUser");
         window.location.href = "login.html";
-      };
+      }
     </script>
   </body>
 </html>
