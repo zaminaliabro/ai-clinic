@@ -120,6 +120,7 @@
       // logout
       document.getElementById("logoutBtn").onclick = () => {
         localStorage.removeItem("currentUser");
+        alert("Logged out successfully!");
         window.location.href = "login.html";
       };
     </script>
