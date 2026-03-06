@@ -5,9 +5,8 @@ form.addEventListener("submit", function (e) {
 
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
-  const selectedRole = document.getElementById("role").value;
 
-  if (!email || !password || !selectedRole) {
+  if (!email || !password) {
     alert("Fill all fields!");
     return;
   }
@@ -23,30 +22,15 @@ form.addEventListener("submit", function (e) {
     return;
   }
 
-  // 🔴 role mismatch check
-  if (user.role !== selectedRole) {
-    alert("You selected wrong role!");
-    return;
-  }
-
   // ✅ save current user
   localStorage.setItem("currentUser", JSON.stringify(user));
 
   // ✅ PERFECT redirect
-  switch (user.role) {
-    case "doctor":
-      window.location.href = "doctor.html";
-      break;
-
-    case "patient":
-      window.location.href = "patient.html";
-      break;
-
-    case "admin":
-      window.location.href = "admin.html";
-      break;
-
-    default:
-      alert("Unknown role");
+  if (user.role === "doctor") {
+    window.location.href = "doctor.html";
+  } else if (user.role === "patient") {
+    window.location.href = "patient.html";
+  } else if (user.role === "admin") {
+    window.location.href = "admin.html";
   }
 });

@@ -144,6 +144,23 @@
           grid-template-columns: 1fr;
         }
       }
+      /* ================= APPROVE BUTTON (SMALL) ================= */
+      .approveBtn {
+        background: #16a34a;
+        color: white;
+        border: none;
+        padding: 4px 8px;
+        margin-right: 4px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 12px;
+        transition: 0.2s;
+      }
+
+      .approveBtn:hover {
+        background: #15803d;
+      }
     </style>
   </head>
 
@@ -209,78 +226,71 @@
     </div>
 
     <script>
-      // ===== LOAD CURRENT USER =====
-      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      // ================= LOAD DATA FROM localStorage =================
 
-      // ===== LOAD DATA =====
+      const currentUser = JSON.parse(localStorage.getItem("currentUser")) || {};
       const doctors = JSON.parse(localStorage.getItem("doctors")) || [];
       const appointments =
         JSON.parse(localStorage.getItem("appointments")) || [];
 
-      // ===== PATIENT INFO =====
-      if (currentUser) {
-        document.getElementById("patientName").textContent =
-          (currentUser.firstName || "") + " " + (currentUser.lastName || "");
+      // ================= PATIENT INFO =================
+      document.getElementById("patientName").textContent =
+        currentUser.firstName && currentUser.lastName
+          ? currentUser.firstName + " " + currentUser.lastName
+          : currentUser.name || "N/A";
 
-        document.getElementById("patientEmail").textContent =
-          currentUser.email || "N/A";
+      document.getElementById("patientEmail").textContent =
+        currentUser.email || "N/A";
 
-        document.getElementById("patientId").textContent =
-          currentUser.id || "P-1001";
+      document.getElementById("patientId").textContent =
+        currentUser.id || "N/A";
+
+      // ================= FIND ASSIGNED DOCTOR =================
+      let assignedDoctor = null;
+
+      if (currentUser.doctor) {
+        assignedDoctor = doctors.find(
+          (d) => d.name?.toLowerCase() === currentUser.doctor?.toLowerCase(),
+        );
       }
 
-      // ===== AUTO FIND DOCTOR FROM APPOINTMENTS ===== ✅
-      if (currentUser) {
-        const myAppointment = appointments.find(
-          (a) =>
-            a.patient?.toLowerCase() === currentUser.firstName?.toLowerCase(),
+      document.getElementById("doctorName").textContent =
+        assignedDoctor?.name || currentUser.doctor || "Not Assigned";
+
+      document.getElementById("doctorSpec").textContent =
+        assignedDoctor?.specialty || "-";
+
+      // ================= APPOINTMENT HISTORY =================
+      const table = document.getElementById("appointmentTable");
+
+      // filter only this patient's appointments
+      const myAppointments = appointments.filter((a) => {
+        const patientName =
+          currentUser.firstName && currentUser.lastName
+            ? (currentUser.firstName + " " + currentUser.lastName).toLowerCase()
+            : (currentUser.name || "").toLowerCase();
+
+        return (
+          a.patient?.toLowerCase() === patientName ||
+          a.name?.toLowerCase() === patientName
         );
+      });
 
-        if (myAppointment) {
-          document.getElementById("doctorName").textContent =
-            "Dr. " + myAppointment.doctor;
+      document.getElementById("totalAppointments").textContent =
+        myAppointments.length;
 
-          // find specialty from doctors list
-          const docInfo = doctors.find(
-            (d) =>
-              d.name?.toLowerCase() === myAppointment.doctor?.toLowerCase(),
-          );
-
-          document.getElementById("doctorSpec").textContent =
-            docInfo?.specialty || "General";
-        } else {
-          document.getElementById("doctorName").textContent = "Not Assigned";
-          document.getElementById("doctorSpec").textContent = "-";
-        }
-      }
-
-      // ===== APPOINTMENTS TABLE =====
-      const tbody = document.getElementById("appointmentTable");
-
-      if (tbody && currentUser) {
-        const myAppointments = appointments.filter(
-          (a) =>
-            a.patient?.toLowerCase() === currentUser.firstName?.toLowerCase(),
-        );
-
-        document.getElementById("totalAppointments").textContent =
-          myAppointments.length;
-
-        tbody.innerHTML = "";
-
-        myAppointments.forEach((appt, index) => {
-          tbody.innerHTML += `
-        <tr>
+      myAppointments.forEach((appt, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
           <td>${index + 1}</td>
-          <td>Dr. ${appt.doctor}</td>
-          <td>${appt.date}</td>
-          <td class="status-${appt.status.toLowerCase()}">${appt.status}</td>
-        </tr>
-      `;
-        });
-      }
+          <td>${appt.doctor || "-"}</td>
+          <td>${appt.date || "-"}</td>
+          <td class="status-${(appt.status || "pending").toLowerCase()}">${appt.status || "Pending"}</td>
+        `;
+        table.appendChild(row);
+      });
 
-      // ===== LOGOUT =====
+      // ================= LOGOUT =================
       function logout() {
         localStorage.removeItem("currentUser");
         window.location.href = "login.html";
